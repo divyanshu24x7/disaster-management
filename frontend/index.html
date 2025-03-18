@@ -6,23 +6,40 @@
     <title>Disaster Classification</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
-<body>
+<body class="bg-gray-800">
 
-    <div class="navbar">
-        <a href="index.html">Classify</a>
-        <a href="about.html">About</a>
+    <nav class="bg-gray-900">
+        <div class="container">
+            <header>
+                <svg class="twitter-logo" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 1668.56 1221.19"
+                    viewBox="0 0 1668.56 1221.19" id="twitter-x">
+                    <path
+                        d="M283.94,167.31l386.39,516.64L281.5,1104h87.51l340.42-367.76L984.48,1104h297.8L874.15,558.3l361.92-390.99
+                              h-87.51l-313.51,338.7l-253.31-338.7H283.94z M412.63,231.77h136.81l604.13,807.76h-136.81L412.63,231.77z"
+                        transform="translate(52.39 -25.059)"></path>
+                </svg>
+                <h1 class="text-4xl text-sky-500">NLP Disaster Tweets</h1>
+            </header>
+            <div class="flex gap-[15px] text-sky-500">
+                <a href="dashboard.html" class="hover:text-rose-800">Exploratory Data Analysis</a>
+                <a href="" class="hover:text-rose-800">Classification</a>
+                <a href="index.html" class="hover:text-rose-800">Make a Prediction</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container2 bg-gray-900">
+        <h2 class="text-sky-500 text-3xl font-extrabold tracking-wide mb-4">Make a Prediction</h2>
+        <textarea id="tweetInput" placeholder="Enter a tweet..." class="text-sky-700 text-lg font-medium placeholder-gray-400 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition"></textarea>
+        <button onclick="classifyTweet()" class="text-white text-lg font-semibold bg-sky-500">Classify</button>
+    
+        <div id="loading" class="text-yellow-400 text-lg font-semibold italic">🔄 Classifying...</div>
+        <div id="result" class="text-green-400 text-lg font-bold"></div>
     </div>
-
-    <div class="container">
-        <h2>Disaster Tweet Classification</h2>
-        <textarea id="tweetInput" placeholder="Enter a tweet..."></textarea>
-        <button onclick="classifyTweet()">Classify</button>
-
-        <div id="loading">🔄 Classifying...</div>
-        <div id="result"></div>
-    </div>
+    
 
     <div id="map"></div>
 

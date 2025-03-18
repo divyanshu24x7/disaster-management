@@ -1,0 +1,86 @@
+body{
+    color: white;
+}
+.container{
+    width: 90%;
+    margin: 0 auto;
+}
+
+
+nav {
+    width: 100%;
+    padding: 0.7rem 0;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+}
+
+main {
+    position: relative;
+    top: 5.4rem;
+}
+
+header{
+    display: flex;
+}
+
+.twitter-logo{
+    width: 50px;
+    height: auto;
+    fill: white;
+}
+
+.keywords{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-template-rows: repeat(2,1fr);
+    gap: 10px;
+}
+
+.keywords .item {
+    background-color: oklch(0.446 0.03 256.802);
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #000;
+    border-radius: 10px;
+}
+
+.label-radio{
+    display: flex;
+    justify-content: space-between;
+}
+
+.graph-d3{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.globe-chart{
+    display: flex;
+    justify-content: space-between;
+}
+
+.globe-radio{
+    display: flex;
+    flex-direction: column;
+}
+
+
+#wordCloudContainer {
+    width: 100%;  /* 100% of viewport width */
+    height: 500px; /* Adjust as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#disasterPieChart{
+    margin: auto;
+}
+
+p{
+    margin-bottom: 4px;
+}
+

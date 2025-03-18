@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/globe.gl@2.41.1/dist/globe.gl.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-cloud@1.2.5/build/d3.layout.cloud.js"></script>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+
+
+    <link rel="stylesheet" href="main.css">
+    <title>Document</title>
+</head>
+
+<body class="bg-gray-800">
+    <nav class="bg-gray-900">
+        <div class="container">
+            <header>
+                <svg class="twitter-logo" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 1668.56 1221.19"
+                    viewBox="0 0 1668.56 1221.19" id="twitter-x">
+                    <path
+                        d="M283.94,167.31l386.39,516.64L281.5,1104h87.51l340.42-367.76L984.48,1104h297.8L874.15,558.3l361.92-390.99
+                              h-87.51l-313.51,338.7l-253.31-338.7H283.94z M412.63,231.77h136.81l604.13,807.76h-136.81L412.63,231.77z"
+                        transform="translate(52.39 -25.059)"></path>
+                </svg>
+                <h1 class="text-4xl text-sky-500">NLP Disaster Tweets</h1>
+            </header>
+            <div class="flex gap-[15px] text-sky-500">
+                <a href="" class="hover:text-rose-800">Exploratory Data Analysis</a>
+                <a href="" class="hover:text-rose-800">Classification</a>
+                <a href="index.html" class="hover:text-rose-800">Make a Prediction</a>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div class="container">
+            <h2 class="text-2xl text-sky-600">Introduction</h2>
+            <p>The NLP Disaster Tweets dataset from Kaggle contains over 10,000 tweets labeled to determine whether they refer to real disasters or are unrelated, such as metaphorical or figurative language. Each tweet includes an ID, text content, and optional metadata like user-provided location and disaster-related keywords. The target variable indicates whether a tweet is about a real disaster (1) or not (0).</p>
+            <p>The training dataset contains 7613 rows and the testing dataset contains 3263 rows. So, in total we have 10876 rows with a training/testing split of about 70:30</p>
+            <h2 class="text-2xl text-sky-600">Data Quality</h2>
+            <p>the following data quality issues were identified:</p>
+            <ul class="list-disc pl-5">
+                <li>Duplicate values</li>
+                <li>Missing target values</li>
+                <li>Different formats of location</li>
+                <li>Non-standard/Unintelligible characters</li>
+                <li>Invalid responses in the location column</li>
+            </ul>
+            <h2 class="text-2xl text-sky-600">Keyword</h2>
+            <p>In the dataset, the "keyword" column contains specific disaster-related words or phrases extracted from the tweets. These keywords help indicate whether a tweet is about a real disaster or just using disaster-related terms in a figurative or unrelated context. Some examples of keywords include "earthquake," "flood," "wildfire," or "bomb." However, not all tweets have an associated keyword, and some may have missing values in this column.</p>
+            <p>There are 221 distinct keywords in the training dataset.</p>
+            <p>We tried to group the keywords into broader categories, coming up with 8 such categories.</p>
+            <p>Fig 1. Keyword Groups</p>
+            <div class="keywords">
+                <div class="item">
+                    <h3 class="text-xl">Accidents</h3>
+                    <p>"crash", "collision", "wreck", "derailment"</p>
+                </div>
+                <div class="item">
+                    <h3 class="text-xl">Fires & Explosions</h3>
+                    <p>"fire", "wildfire", "explosion", "bomb"</p>
+                </div>
+                <div class="item">
+                    <h3 class="text-xl">Other Disasters</h3>
+                    <p>"disaster", "catastrophe", "tragedy", "emergency"</p>
+                </div>
+                <div class="item">
+                    <h3 class="text-xl">Weather Disasters</h3>
+                    <p>"storm", "hurricane", "flood", "tornado"</p>
+                </div>
+                <div class="item">
+                    <h3 class="text-xl">Terrorism & Attacks</h3>
+                    <p>"attack", "hostage", "bombing", "terrorism"</p>
+                </div>
+                <div class="item">
+                    <h3 class="text-xl">Earthquakes & Tsunamis</h3>
+                    <p>"earthquake", "tsunami", "seismic", "shake"</p>
+                </div>
+                <div class="item">
+                    <h3 class="text-xl">Medical & Health Emergencies</h3>
+                    <p>"pandemic", "epidemic", "outbreak", "ebola"</p>
+                </div>
+                <div class="item">
+                    <h3 class="text-xl">Military & War</h3>
+                    <p>"war", "military", "airstrike", "conflict</p>
+                </div>
+            </div>
+            <p>We have created an additional category for all the generic words that relate to distasters like
+                'emergency' while not indicating any specific type:</p>
+            <h2 class="text-2xl">OTHER</h2>
+            <p>"disaster", "catastrophe", "tragedy", "emergency"</p>
+            <p>When the others category is excluded, we see that the most common types of disasters are accidents in
+                all means of transportation (car, train, plane, marine) as well as related to the effects of wind,
+                fires, floodings, terrorism and explosions.</p>
+            <div>
+                <div class="label-radio">
+                    <p>Fig 2. Frequencies of disasters by category"</p>
+                    <div>
+                        <label>
+                            <input type="radio" name="disaster" value="earthquake"> All categories
+                        </label>
+                        <label>
+                            <input type="radio" name="disaster" value="flood"> exclude others
+                        </label>
+                    </div>
+                </div>
+                <canvas id="barChart"></canvas>
+            </div>
+           
+            <p>Caveat 1. The above map represents data where 'target'=1, so records labelled as actual disasters.</p>
+            <p>Caveat 2. Locations should be thought of as approximates. That's because we take into account location of
+                the profile posting a tweet. The tweet itself could, nevertheless, relate to a disaster happening in
+                another country.</p>
+            <h2>Text</h2>
+            <p>The column 'text' takes a special place in our analysis. This is because it is the only explanatory
+                variable, that is used in our NLP classification model. Each value represents a separate tweet, so a
+                short chunk of text, as Twitter limits the number of characters in a miniblog to 280.</p>
+            <h2 class="text-2xl">WORD FREQUENCY</h2>
+            <p>We can start, as is typical in analysing text data, from word frequency.",
+                html.P("'Corpus' is an another name for a pool of all the words in a text file, column of table, or a
+                paragraph of text. The pool of all words present in column 'text' totals has 31 924 distinct values.
+                Values are in vast majority words but can also mean dashes or other punctuation characters."),
+                html.P("Distributiom is right-skewed and resambles a Pareto distribution, otherwise known as a power-law
+                distribution, where top words are much more frequent than the next most frequent words."),
+                html.P("Choose number of top words to display"),</p>
+            <div>
+                <p>Fig 3. Frequencies of words by category</p>
+                <input type="range" id="wordSlider1" min="5" max="30" step="5" value="10">
+                <span id="sliderValue1">10</span>
+                <canvas id="barChart1"></canvas>
+            </div>
+            <p>Taking a first glance at the word frequency distribution, we discover that stopwords take up the first 50
+                most frequent words. Stopwords represent words like 'the', 'a', 'to', 'in', 'of', 'and', etc. This type
+                of words is common in all kinds of text irregardles of the meaning. Therefore, we decided to perform the
+                following data manipulations:</p>
+            <ul class="list-disc pl-5">
+                <li>Change all text to lower case</li>
+                <li>Splitting contractions e.g. you're -> you are, weren't -> were not</li>
+                <li>Remove punctuation characters e.g. '!', '%', '&', '+', ',', '-', '.' etc.</li>
+                <li>Remove stopwords e.g. 'the', 'is', 'in', 'very', 'such', etc.</li>
+                <li>Remove hashtag while keeping hashtag text</li>
+                <li>Remove HTML special entities (e.g. &amp;)</li>
+                <li>Remove tickers</li>
+                <li>Remove hyperlinks</li>
+                <li>Remove whitespace (including new line characters)</li>
+                <li>Remove URL, RT, mention(@)</li>
+                <li>Remove characters beyond Basic Multilingual Plane (BMP) of Unicode</li>
+                <li>Remove Remove emoji</li>
+                <li>Remove mojibake (also extra spaces)"</li>
+            </ul>
+            <p>This resulted in the following data:</p>
+            <div>
+                <p>Fig 4. After removing stop words</p>
+                <input type="range" id="wordSlider3" min="5" max="30" step="5" value="10">
+                <span id="sliderValue3">10</span>
+                <canvas id="barChart3"></canvas>
+            </div>
+            <p>Alternatively, we can get the sense of most common words by looking at the wordcloud below:</p>
+            <p>Fig 5. Word cloud</p>
+
+            <div id="wordCloudContainer"></div>
+            <h2 class="text-2xl">TARGET</h2>
+            <p>Finally, we come to the response variable 'target'. It is a labelling variable that designates rows to
+                one of two classes.
+                Most of the machine learning algorithms used for classification were designed around the
+                assumption of an equal number of examples for each class.
+                The ratio of classes is 57% to 43%, so we can call this dataset balanced.</p>
+            <p>Fig 6. Dataset Balance</p>
+
+            <canvas id="disasterPieChart" width="300" height="300"></canvas>
+        </div>
+    </main>
+    <script type="module" src="main.js"></script>
+</body>
+
+</html>
