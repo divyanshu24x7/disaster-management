@@ -75,7 +75,7 @@ button:hover {
 nav {
     width: 100%;
     padding: 0.7rem 0;
-    position: fixed;
+    position: sticky;
     top: 0;
     z-index: 10;
 }
