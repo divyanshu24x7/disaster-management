@@ -18,7 +18,7 @@ naive_bayes_model = joblib.load(model_path1)
 logistic_regression_model = joblib.load(model_path2)
 vectorizer = joblib.load(vectorizer_path)  # Ensure this matches what was used in training
 
-def classify_tweet(tweet, model_choice="naive_bayes"):
+def classify_tweet(tweet, model_choice=""):
     # Preprocess tweet (ensure consistency with training data)
     tweet_vector = vectorizer.transform([tweet])
 

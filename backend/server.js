@@ -9,7 +9,7 @@ app.use(cors());
 // Function to classify a tweet using Python script
 const classifyTweet = (tweet) => {
     return new Promise((resolve, reject) => {
-        const process = spawn("C:\\Users\\KIIT\\AppData\\Local\\Programs\\Python\\Python312\\python.exe", ["scripts\\classify.py", tweet]);
+        const process = spawn("C:\\Python312\\python.exe", ["scripts\\classify.py", tweet]);
 
         let result = "";
         process.stdout.on("data", (data) => (result += data.toString()));

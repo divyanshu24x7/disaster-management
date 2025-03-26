@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Disaster Classification</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 
-<body class="bg-gray-800">
+<body class="bg-gray-800 h-screen flex flex-col">
     <nav class="bg-gray-900">
         <div class="container">
             <header>
@@ -31,19 +31,21 @@
             </div>
         </div>
     </nav>
-    <main class="flex h-screen">
-        <div class="bg-gray-900 h-full">
-            <h2 class="text-sky-500 text-3xl font-extrabold tracking-wide mb-4">Make a Prediction</h2>
-            <textarea id="tweetInput" placeholder="Enter a tweet..."
-                class="text-sky-700 text-lg font-medium placeholder-gray-400 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition"></textarea>
-            <button onclick="classifyTweet()" class="text-white text-lg font-semibold bg-sky-500">Classify</button>
-
-            <div id="loading" class="text-yellow-400 text-lg font-semibold italic">🔄 Classifying...</div>
-            <div id="result" class="text-green-400 text-lg font-bold"></div>
+    <div class="flex grow pt-[5.5rem]">
+        <div class="flex items-center justify-center w-[400px]">
+            <div class="bg-gray-900 p-6 rounded-lg shadow-lg">
+                <h2 class="text-sky-500 text-3xl font-extrabold tracking-wide mb-4">Make a Prediction</h2>
+                <textarea id="tweetInput" placeholder="Enter a tweet..."
+                    class="text-white text-lg font-medium placeholder-gray-400 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition mb-4 p-2 w-full"></textarea>
+                <button onclick="classifyTweet()" class="text-white text-lg font-semibold bg-sky-500 px-4 py-2 rounded-md w-full cursor-pointer">Classify</button>
+    
+                <div id="loading" class="text-yellow-400 text-lg font-semibold italic mt-2 hidden">🔄 Classifying...</div>
+                <div id="result" class="text-green-400 text-lg font-bold mt-2"></div>
+            </div>
         </div>
-        <div id="map" class="h-full"></div>
-    </main>
-
+    
+        <div id="map" class="flex-1"></div>
+    </div>
 
     <script src="script.js"></script>
 </body>
