@@ -16,9 +16,11 @@ model_path2 = os.path.join(os.path.dirname(__file__), "..", "models", "disaster_
 vectorizer_path = os.path.join(os.path.dirname(__file__), "..", "models", "vectorizer.pkl")
 naive_bayes_model = joblib.load(model_path1)
 logistic_regression_model = joblib.load(model_path2)
+
+
 vectorizer = joblib.load(vectorizer_path)  # Ensure this matches what was used in training
 
-def classify_tweet(tweet, model_choice=""):
+def classify_tweet(tweet,model_choice):
     # Preprocess tweet (ensure consistency with training data)
     tweet_vector = vectorizer.transform([tweet])
 
@@ -27,7 +29,8 @@ def classify_tweet(tweet, model_choice=""):
         prediction = naive_bayes_model.predict(tweet_vector)[0]
     else:  # Default to logistic regression
         prediction = logistic_regression_model.predict(tweet_vector)[0]
-
+    
+    
     classification = "disaster" if prediction == 1 else "non-disaster"
 
     # Extract location
@@ -40,7 +43,7 @@ def classify_tweet(tweet, model_choice=""):
 
     # Get coordinates if location exists
     coordinates = None
-    if location:
+    if location and classification == "disaster":
         loc = geolocator.geocode(location)
         if loc:
             coordinates = [loc.latitude, loc.longitude]
@@ -57,4 +60,5 @@ def classify_tweet(tweet, model_choice=""):
 # Run classification
 if __name__ == "__main__":
     input_tweet = " ".join(sys.argv[1:])
-    classify_tweet(input_tweet, model_choice="naive_bayes")  # Change to "logistic_regression" if needed
+    model_choice = "logistic_regression"
+    classify_tweet(input_tweet, model_choice)  # Change to "logistic_regression" if needed
